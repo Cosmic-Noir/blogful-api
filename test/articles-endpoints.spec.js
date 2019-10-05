@@ -43,6 +43,14 @@ describe(`GET /articles`, () => {
 });
 
 describe(`/GET /articles/:article_id`, () => {
+  context(`Given no articles`, () => {
+    it(`responds with  404`, () => {
+      const articleId = 123445;
+      return supertest(app)
+        .get(`/articles/${articleId}`)
+        .expect(404, { error: { message: `Article doesn't exist` } });
+    });
+  });
   context("Given there are articles in the database", () => {
     const testArticles = makeArticlesArray();
 
