@@ -62,7 +62,7 @@ describe.only("Articles Endpoints", () => {
     it("GET /articles responds with 300 and all articles", () => {
       return supertest(app)
         .get("/articles")
-        .expect(200);
+        .expect(200, testArticles);
     });
   });
 });
