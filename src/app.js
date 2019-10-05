@@ -25,6 +25,10 @@ app.use(function errorHandler(error, req, res, next) {
   res.status(500).json(response);
 });
 
+app.get("/", (req, res) => {
+  res.json("yes");
+});
+
 app.get("/articles", (req, res, next) => {
   const knexInstance = req.app.get("db");
   ArticlesService.getAllArticles(knexInstance)
