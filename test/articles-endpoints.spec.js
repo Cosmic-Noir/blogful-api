@@ -4,7 +4,7 @@ const knex = require("knex");
 
 const app = require("../src/app");
 
-describe("Articles Endpoints", () => {
+describe.only("Articles Endpoints", () => {
   let db;
 
   before("make knex instance", () => {
@@ -12,6 +12,7 @@ describe("Articles Endpoints", () => {
       client: "pg",
       connection: process.env.TEST_DB_URL
     });
+    app.set("db", db);
   });
 
   after("disconnect from db", () => db.destroy());
@@ -56,6 +57,12 @@ describe("Articles Endpoints", () => {
 
     beforeEach("insert articles", () => {
       return db.into("blogful_articles").insert(testArticles);
+    });
+
+    it("GET /articles responds with 300 and all articles", () => {
+      return supertest(app)
+        .get("/articles")
+        .expect(200);
     });
   });
 });
