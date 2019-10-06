@@ -1,6 +1,6 @@
 const express = require("express");
 const ArticlesService = require("./articles-service");
-
+const xss = require("xss");
 const articlesRouter = express.Router();
 const jsonParser = express.json();
 
@@ -45,7 +45,14 @@ articlesRouter.route("/:article_id").get((req, res, next) => {
           error: { message: `Article doesn't exist` }
         });
       }
-      res.json(article);
+      // res.json(article);
+      res.json({
+        id: article.id,
+        style: article.style,
+        title: xss(article.title), // sanitized
+        content: xss(article.content), // sanitized
+        date_published: article.date_published
+      });
     })
     .catch(next);
 });
