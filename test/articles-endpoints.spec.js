@@ -119,4 +119,16 @@ describe(`POST /articles`, () => {
       })
       .expect(400, { error: { message: `Missing 'content' in request body` } });
   });
+
+  it(`responds with 400 and an error message when the style is missing`, () => {
+    return supertest(app)
+      .post("/articles")
+      .send({
+        title: "Test new title",
+        content: "Test new article content..."
+      })
+      .expect(400, {
+        error: { message: `Missing 'style' in request body` }
+      });
+  });
 });
