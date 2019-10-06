@@ -89,11 +89,11 @@ describe(`POST /articles`, () => {
         const expected = new Date().toLocaleString();
         const actual = new Date(res.body.date_published).toLocaleString();
         expect(actual).to.eql(expected);
-      });
-    // .then(postRes =>
-    //   supertest(app)
-    //     .get(`articles/${postRes.body.id}`)
-    //     .expect(postRes.body)
-    // );
+      })
+      .then(postRes =>
+        supertest(app)
+          .get(`articles/${postRes.body.id}`)
+          .expect(postRes.body)
+      );
   });
 });

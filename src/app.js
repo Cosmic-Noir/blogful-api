@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
-const ArticlesService = require("./articles-service");
+const ArticlesService = require("./articles/articles-service");
 
 const app = express();
 
