@@ -168,6 +168,15 @@ describe(`POST /articles`, () => {
 });
 
 describe(`DELETE /articles/:article_id`, () => {
+  context(`Given no articles`, () => {
+    it(`responds with 404`, () => {
+      const articleId = 12345;
+      return supertest(app)
+        .delete(`/articles/${articleId}`)
+        .expect(404, { error: { message: `Article doesn't exist` } });
+    });
+  });
+
   context("Given there are articles in the database", () => {
     const testArticles = makeArticlesArray();
 
