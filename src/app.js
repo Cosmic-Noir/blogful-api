@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const jsonParser = express.json();
 const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -50,6 +51,15 @@ app.get("/articles/:article_id", (req, res, next) => {
       res.json(article);
     })
     .catch(next);
+});
+
+// POST requests
+
+app.post("/articles", jsonParser, (req, res, next) => {
+  res.status(201).json({
+    ...req.body,
+    id: 12
+  });
 });
 
 module.exports = app;
