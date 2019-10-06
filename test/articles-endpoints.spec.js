@@ -96,4 +96,17 @@ describe(`POST /articles`, () => {
           .expect(res.body)
       );
   });
+
+  it(`responds with 400 and an error message when the title is missing`, () => {
+    return (
+      supertest(app)
+        .post("/articles")
+        .send({
+          style: "Listicle",
+          content: "Test new article content..."
+        })
+        .expect(400),
+      { error: { message: `Missing 'title' in request body` } }
+    );
+  });
 });
