@@ -117,6 +117,6 @@ describe(`POST /articles`, () => {
         title: "Test title",
         style: "Listicle"
       })
-      .expect(400, { error: { message: `Missing content in request body` } });
+      .expect(400, { error: { message: `Missing 'content' in request body` } });
   });
 });
