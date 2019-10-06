@@ -1,7 +1,10 @@
 const { expect } = require("chai");
 const knex = require("knex");
 const app = require("../src/app");
-const { makeArticlesArray } = require("./articles.fixtures");
+const {
+  makeArticlesArray,
+  makeMaliciousArticle
+} = require("./articles.fixtures");
 
 let db;
 
@@ -40,9 +43,27 @@ describe(`GET /articles`, () => {
         .expect(200, testArticles);
     });
   });
+
+  context(`Given an XSS attack article`, () => {
+    const { maliciousArticle, expectedArticle } = makeMaliciousArticle();
+
+    beforeEach("insert malicious article", () => {
+      return db.into("blogful_articles").insert([maliciousArticle]);
+    });
+
+    it(`removes XSS attack content`, () => {
+      return supertest(app)
+        .get(`/articles`)
+        .expect(200)
+        .expect(res => {
+          expect(res.body[0].title).to.eql(expectedArticle.title);
+          expect(res.body[0].content).to.eql(expectedArticle.content);
+        });
+    });
+  });
 });
 
-describe.only(`/GET /articles/:article_id`, () => {
+describe(`/GET /articles/:article_id`, () => {
   context(`Given no articles`, () => {
     it(`responds with  404`, () => {
       const articleId = 123445;

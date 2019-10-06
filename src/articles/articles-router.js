@@ -4,13 +4,21 @@ const xss = require("xss");
 const articlesRouter = express.Router();
 const jsonParser = express.json();
 
+const serializedArticle = article => ({
+  id: article.id,
+  style: article.style,
+  title: xss(article.title),
+  content: xss(article.content),
+  date_published: article.date_published
+});
+
 articlesRouter
   .route("/")
   .get((req, res, next) => {
     const knexInstance = req.app.get("db");
     ArticlesService.getAllArticles(knexInstance)
       .then(articles => {
-        res.json(articles);
+        res.json(articles.map(serializedArticle));
       })
       .catch(next);
   })
@@ -31,7 +39,8 @@ articlesRouter
         res
           .status(201)
           .location(`/articles/${article.id}`)
-          .json(article);
+          .json(serializedArticle(article));
+        // .json(article);
       })
       .catch(next);
   });
@@ -46,13 +55,7 @@ articlesRouter.route("/:article_id").get((req, res, next) => {
         });
       }
       // res.json(article);
-      res.json({
-        id: article.id,
-        style: article.style,
-        title: xss(article.title), // sanitized
-        content: xss(article.content), // sanitized
-        date_published: article.date_published
-      });
+      res.json(serializedArticle(article));
     })
     .catch(next);
 });
