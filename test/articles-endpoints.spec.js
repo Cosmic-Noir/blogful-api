@@ -69,8 +69,8 @@ describe(`/GET /articles/:article_id`, () => {
 });
 
 describe(`POST /articles`, () => {
-  it(`creates an article, responding with 201 and the new article`, () => {
-    // this.retries(3);
+  it(`creates an article, responding with 201 and the new article`, function() {
+    this.retries(3);
     const newArticle = {
       title: "Test new article",
       style: "Listicle",
@@ -90,10 +90,10 @@ describe(`POST /articles`, () => {
         const actual = new Date(res.body.date_published).toLocaleString();
         expect(actual).to.eql(expected);
       })
-      .then(postRes =>
+      .then(res =>
         supertest(app)
-          .get(`articles/${postRes.body.id}`)
-          .expect(postRes.body)
+          .get(`/articles/${res.body.id}`)
+          .expect(res.body)
       );
   });
 });
