@@ -204,3 +204,46 @@ describe(`DELETE /api/articles/:article_id`, () => {
     });
   });
 });
+
+describe.only(`PATCH /api/articles/:article_id`, () => {
+  context(`Given there are no articles`, () => {
+    it(`Responds with 404`, () => {
+      const articleId = 123455;
+      return supertest(app)
+        .patch(`/api/articles/${articleId}`)
+        .expect(404, { error: { message: `Article doesn't exist` } });
+    });
+  });
+
+  context(`Given ther are articles in the database`, () => {
+    const testArticles = makeArticlesArray();
+
+    beforeEach("insert articles", () => {
+      return db.into("blogful_articles").insert(testArticles);
+    });
+
+    it(`Responds with 204 and updates the article`, () => {
+      const idToUpdate = 2;
+      const updateArticle = {
+        title: "Update article Title",
+        style: "Interview",
+        content: "Updated article content"
+      };
+
+      const expectedArticle = {
+        ...testArticles[idToUpdate - 1],
+        ...updateArticle
+      };
+
+      return supertest(app)
+        .patch(`/api/articles/${idToUpdate}`)
+        .send(updateArticle)
+        .expect(204)
+        .then(res =>
+          supertest(app)
+            .get(`/api/articles/${idToUpdate}`)
+            .expect(expectedArticle)
+        );
+    });
+  });
+});
