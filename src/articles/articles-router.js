@@ -1,9 +1,12 @@
 const express = require("express");
 const ArticlesService = require("./articles-service");
 const xss = require("xss");
+
+// Create router:
 const articlesRouter = express.Router();
 const jsonParser = express.json();
 
+// sterilized article:
 const serializedArticle = article => ({
   id: article.id,
   style: article.style,
@@ -38,7 +41,7 @@ articlesRouter
       .then(article => {
         res
           .status(201)
-          .location(`/articles/${article.id}`)
+          .location(req.originalUrl + `/${article.id}`)
           .json(serializedArticle(article));
         // .json(article);
       })

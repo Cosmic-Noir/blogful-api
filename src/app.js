@@ -30,6 +30,6 @@ app.get("/", (req, res) => {
 });
 
 // Router:
-app.use("/articles", articlesRouter);
+app.use("/api/articles", articlesRouter);
 
 module.exports = app;
