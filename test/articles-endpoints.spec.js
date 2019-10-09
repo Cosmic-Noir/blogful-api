@@ -205,7 +205,7 @@ describe(`DELETE /api/articles/:article_id`, () => {
   });
 });
 
-describe.only(`PATCH /api/articles/:article_id`, () => {
+describe(`PATCH /api/articles/:article_id`, () => {
   context(`Given there are no articles`, () => {
     it(`Responds with 404`, () => {
       const articleId = 123455;
@@ -244,6 +244,42 @@ describe.only(`PATCH /api/articles/:article_id`, () => {
             .get(`/api/articles/${idToUpdate}`)
             .expect(expectedArticle)
         );
+    });
+
+    it(`Responds with 400 when no required fields supplied`, () => {
+      const idToUpdate = 2;
+      return supertest(app)
+        .patch(`/api/articles/${idToUpdate}`)
+        .send({ irrelevantField: "foo" })
+        .expect(400, {
+          error: {
+            message: `Request body must contain either 'title', 'style' or 'content'`
+          }
+        });
+    });
+
+    it(`Responds with 204 when updating only a subset of fields`, () => {
+      const idToUpdate = 2;
+      const updateArticle = {
+        title: "Updated Title"
+      };
+      const expectedArticle = {
+        ...testArticles[idToUpdate - 1],
+        ...updateArticle
+      };
+
+      return supertest(app)
+        .patch(`/api/articles/${idToUpdate}`)
+        .send({
+          ...updateArticle,
+          fieldToIgnore: "should not be in GET response"
+        })
+        .expect(204)
+        .then(res => {
+          supertest(app)
+            .get(`/api/articles/${idToUpdate}`)
+            .expect(expectedArticle);
+        });
     });
   });
 });
