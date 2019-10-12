@@ -5,6 +5,7 @@ const {
   makeArticlesArray,
   makeMaliciousArticle
 } = require("./articles.fixtures");
+const { makeUsersArray } = require("./users.fixtures");
 
 let db;
 
@@ -20,9 +21,17 @@ before("make knex instance", () => {
 // Disconnect and clear the table for testing:
 after("disconnect from db", () => db.destroy());
 
-before("clear the table", () => db("blogful_articles").truncate());
+before("clean the table", () =>
+  db.raw(
+    "TRUNCATE blogful_articles, blogful_users, blogful_comments RESTART IDENTITY CASCADE"
+  )
+);
 
-afterEach("cleanup", () => db("blogful_articles").truncate());
+afterEach("cleanup", () =>
+  db.raw(
+    "TRUNCATE blogful_articles, blogful_users, blogful_comments RESTART IDENTITY CASCADE"
+  )
+);
 
 // GET endpoints
 describe(`GET /api/articles`, () => {
