@@ -23,7 +23,7 @@ const CommentsService = {
       .where({ id })
       .delete();
   },
-  updateComment(knex, id, newCommentFileds) {
+  updateComment(knex, id, newCommentFields) {
     return knex("blogful_comments")
       .where({ id })
       .update(newCommentFields);
