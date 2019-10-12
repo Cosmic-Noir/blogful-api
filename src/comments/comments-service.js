@@ -1,5 +1,5 @@
 const CommentsService = {
-  getAllcomments(knex) {
+  getAllComments(knex) {
     return knex.select("*").from("blogful_comments");
   },
   insertComment(knex, newComment) {
