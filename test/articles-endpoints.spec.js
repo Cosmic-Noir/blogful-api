@@ -44,10 +44,16 @@ describe(`GET /api/articles`, () => {
   });
 
   context("Given there are articles in the database", () => {
+    const testUsers = makeUsersArray();
     const testArticles = makeArticlesArray();
 
     beforeEach("insert articles", () => {
-      return db.into("blogful_articles").insert(testArticles);
+      return db
+        .into("blogful_users")
+        .insert(testUsers)
+        .then(() => {
+          return db.into("blogful_articles").insert(testArticles);
+        });
     });
 
     it("GET /articles responds with 200 and all articles", () => {
@@ -86,10 +92,16 @@ describe(`/GET /api/articles/:article_id`, () => {
     });
   });
   context("Given there are articles in the database", () => {
+    const testUsers = makeUsersArray();
     const testArticles = makeArticlesArray();
 
     beforeEach("insert articles", () => {
-      return db.into("blogful_articles").insert(testArticles);
+      return db
+        .into("blogful_users")
+        .insert(testUsers)
+        .then(() => {
+          return db.into("blogful_articles").insert(testArticles);
+        });
     });
 
     it("responds with 200 and the specified article", () => {
@@ -191,10 +203,16 @@ describe(`DELETE /api/articles/:article_id`, () => {
   });
 
   context("Given there are articles in the database", () => {
+    const testUsers = makeUsersArray();
     const testArticles = makeArticlesArray();
 
     beforeEach("insert articles", () => {
-      return db.into("blogful_articles").insert(testArticles);
+      return db
+        .into("blogful_users")
+        .insert(testUsers)
+        .then(() => {
+          return db.into("blogful_articles").insert(testArticles);
+        });
     });
 
     it("responds with 204 and removes the article", () => {
@@ -225,10 +243,16 @@ describe(`PATCH /api/articles/:article_id`, () => {
   });
 
   context(`Given ther are articles in the database`, () => {
+    const testUsers = makeUsersArray();
     const testArticles = makeArticlesArray();
 
     beforeEach("insert articles", () => {
-      return db.into("blogful_articles").insert(testArticles);
+      return db
+        .into("blogful_users")
+        .insert(testUsers)
+        .then(() => {
+          return db.into("blogful_articles").insert(testArticles);
+        });
     });
 
     it(`Responds with 204 and updates the article`, () => {

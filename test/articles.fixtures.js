@@ -25,7 +25,7 @@ function makeArticlesArray() {
       style: "Listicle",
       content:
         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus, voluptate? Necessitatibus, reiciendis? Cupiditate totam laborum esse animi ratione ipsa dignissimos laboriosam eos similique cumque. Est nostrum esse porro id quaerat.",
-      author: 3
+      author: 1
     },
     {
       id: 4,
