@@ -5,6 +5,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const { NODE_ENV } = require("./config");
 const articlesRouter = require("./articles/articles-router");
+const usersRouter = require("./users/users-router");
 
 const app = express();
 
@@ -31,5 +32,6 @@ app.get("/", (req, res) => {
 
 // Router:
 app.use("/api/articles", articlesRouter);
+app.use("/api/users", usersRouter);
 
 module.exports = app;
